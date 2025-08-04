@@ -14,5 +14,4 @@ public class TransactionResponseDTO {
     private BigDecimal valor;
     private LocalDateTime data;
     private CategoryResponseDTO categoria; // Use the Category DTO
-    // We are intentionally not including the full User object
 }

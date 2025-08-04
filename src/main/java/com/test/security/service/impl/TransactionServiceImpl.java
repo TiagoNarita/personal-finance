@@ -85,6 +85,12 @@ public class TransactionServiceImpl implements TransactionService {
         transactionRepository.delete(transaction);
     }
 
+    @Override
+    public TransactionResponseDTO findTransactionById(Long transactionId, User user) {
+        Transaction transaction = getValidTransaction(transactionId, user);
+        return this.convertToDto(transaction);
+    }
+
     private Transaction getValidTransaction(Long transactionId, User user) {
         Transaction transaction = transactionRepository.findById(transactionId)
                 .orElseThrow(() -> new RuntimeException("Transaction not found with id:" + transactionId));
