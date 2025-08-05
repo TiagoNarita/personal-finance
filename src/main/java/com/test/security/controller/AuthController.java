@@ -6,6 +6,8 @@ import com.test.security.controller.dto.UserDTO;
 import com.test.security.domain.entity.User;
 import com.test.security.service.UserService;
 import com.test.security.service.jwt.JwtService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +30,9 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/register")
+    @Operation(summary = "Register a new user", description = "Creates a new user account.")
+    @ApiResponse(responseCode = "200", description = "User registered successfully")
+    @ApiResponse(responseCode = "400", description = "Invalid input or email already in use")
     public ResponseEntity<String> registerUser(@RequestBody UserDTO userDTO) {
         try {
             User newUser = userService.registerUser(userDTO);
@@ -38,6 +43,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @Operation(summary = "Authenticate a user", description = "Authenticates a user with email and password, returning a JWT token.")
+    @ApiResponse(responseCode = "200", description = "Authentication successful, JWT token returned")
+    @ApiResponse(responseCode = "401", description = "Unauthorized - Invalid credentials")
     public ResponseEntity<JwtResponseDTO> login(@RequestBody LoginRequestDTO loginRequest) {
         // Authenticate the user with the provided email and password.
         Authentication authentication = authenticationManager.authenticate(

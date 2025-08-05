@@ -98,6 +98,12 @@ public class TransactionServiceImpl implements TransactionService {
         return transaction;
     }
 
+    private void loggedUserOwnsTransaction(Transaction transaction, User user) {
+        if(!Objects.equals(transaction.getUsuario().getId(), user.getId())){
+            throw new RuntimeException("Access denied: You do not own this transaction");
+        }
+    }
+
     private void setCategory(Long categoryId, Transaction transaction) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found!"));
@@ -112,12 +118,6 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction updatedTransaction = transactionRepository.save(transaction);
         return convertToDto(updatedTransaction);
-    }
-
-    private void loggedUserOwnsTransaction(Transaction transaction, User user) {
-        if(!Objects.equals(transaction.getUsuario().getId(), user.getId())){
-           throw new RuntimeException("Access denied: You do not own this transaction");
-        }
     }
 
     private TransactionResponseDTO convertToDto(Transaction transaction) {
