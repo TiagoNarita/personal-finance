@@ -7,6 +7,7 @@ import com.test.security.controller.dto.response.TransactionResponseDTO;
 import com.test.security.domain.entity.Category;
 import com.test.security.domain.entity.Transaction;
 import com.test.security.domain.entity.User;
+import com.test.security.exception.ResourceNotFoundException;
 import com.test.security.repository.CategoryRepository;
 import com.test.security.repository.TrasactionRepository;
 import com.test.security.repository.specification.TransactionSpecification;
@@ -92,21 +93,13 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     private Transaction getValidTransaction(Long transactionId, User user) {
-        Transaction transaction = transactionRepository.findById(transactionId)
-                .orElseThrow(() -> new RuntimeException("Transaction not found with id:" + transactionId));
-        loggedUserOwnsTransaction(transaction, user);
-        return transaction;
-    }
-
-    private void loggedUserOwnsTransaction(Transaction transaction, User user) {
-        if(!Objects.equals(transaction.getUsuario().getId(), user.getId())){
-            throw new RuntimeException("Access denied: You do not own this transaction");
-        }
+         return transactionRepository.findByIdAndUsuario(transactionId, user)
+                .orElseThrow(() -> new ResourceNotFoundException("Transaction not found with id: " + transactionId));
     }
 
     private void setCategory(Long categoryId, Transaction transaction) {
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found!"));
         transaction.setCategoria(category);
     }
 
