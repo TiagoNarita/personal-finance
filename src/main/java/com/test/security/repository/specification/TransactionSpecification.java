@@ -27,6 +27,10 @@ public class TransactionSpecification {
             spec = spec.and(hasType(filter.getTipo()));
         }
 
+        if (filter.getDescription() != null && !filter.getDescription().isEmpty()) {
+            spec = spec.and(hasDescription(filter.getDescription()));
+        }
+
         return spec;
     }
 
@@ -36,5 +40,10 @@ public class TransactionSpecification {
             Join<Transaction, Category> categoryJoin = root.join("categoria");
             return criteriaBuilder.equal(categoryJoin.get("tipo"), tipo);
         };
+    }
+
+    private static Specification<Transaction> hasDescription(String description) {
+    return (root, query, criteriaBuilder) ->
+            criteriaBuilder.like(criteriaBuilder.lower(root.get("descricao")), "%" + description.toLowerCase() + "%");
     }
 }

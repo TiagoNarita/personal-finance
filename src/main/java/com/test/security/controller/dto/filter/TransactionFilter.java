@@ -3,9 +3,10 @@ package com.test.security.controller.dto.filter;
 import com.test.security.domain.enums.CategoryType;
 
 public class TransactionFilter {
-       private Integer month;
+    private Integer month;
     private Integer year;
     private CategoryType tipo;
+    private String description;
 
     public Integer getMonth() {
         return month;
@@ -29,5 +30,13 @@ public class TransactionFilter {
 
     public void setTipo(CategoryType tipo) {
         this.tipo = tipo;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

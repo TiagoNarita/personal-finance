@@ -9,7 +9,7 @@ import com.test.security.domain.entity.Transaction;
 import com.test.security.domain.entity.User;
 import com.test.security.exception.ResourceNotFoundException;
 import com.test.security.repository.CategoryRepository;
-import com.test.security.repository.TrasactionRepository;
+import com.test.security.repository.TransactionRepository;
 import com.test.security.repository.specification.TransactionSpecification;
 import com.test.security.service.TransactionService;
 import org.springframework.data.domain.Page;
@@ -20,17 +20,16 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
-import java.util.Objects;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
-    public TransactionServiceImpl(TrasactionRepository transactionRepository, CategoryRepository categoryRepository){
+    public TransactionServiceImpl(TransactionRepository transactionRepository, CategoryRepository categoryRepository){
         this.transactionRepository = transactionRepository;
         this.categoryRepository = categoryRepository;
     }
 
-    private final TrasactionRepository transactionRepository;
+    private final TransactionRepository transactionRepository;
     private final CategoryRepository categoryRepository;
 
     @Override
